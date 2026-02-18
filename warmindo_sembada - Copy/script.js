@@ -81,7 +81,7 @@ reveal();
 let cart = [];
 let buyerInfo = {
     name: '',
-    table: ''
+    catatan: ''
 };
 
 // Close cart modal when clicking the close button
@@ -127,18 +127,18 @@ function saveBuyerInfo() {
 // Update buyer form inputs
 function updateBuyerForm() {
     const nameInput = document.getElementById('buyerName');
-    const tableInput = document.getElementById('buyerTable');
+    const notesInput = document.getElementById('buyerNotes');
     if (nameInput) nameInput.value = buyerInfo.name;
-    if (tableInput) tableInput.value = buyerInfo.table;
+    if (notesInput) notesInput.value = buyerInfo.catatan;
 }
 
 // Update buyer info from form
 function updateBuyerInfoFromForm() {
     const nameInput = document.getElementById('buyerName');
-    const tableInput = document.getElementById('buyerTable');
+    const notesInput = document.getElementById('buyerNotes');
     
     buyerInfo.name = nameInput?.value || '';
-    buyerInfo.table = tableInput?.value || '';
+    buyerInfo.catatan = notesInput?.value || '';
     
     saveBuyerInfo();
 }
@@ -316,18 +316,18 @@ function handleOrderClick() {
         return;
     }
     
-    if (!buyerInfo.table || !buyerInfo.table.trim()) {
-        showToast('Mohon masukkan nomor meja');
-        return;
-    }
-    
     const selectedItems = cart.filter(item => item.selected);
     const selectedTotal = calculateSelectedTotal();
     
     // Build order message with proper line breaks
     let message = `Nama: ${buyerInfo.name}\n`;
-    message += `Meja: ${buyerInfo.table}\n\n`;
-    message += `Pesanan:\n`;
+    
+    // Add catatan/notes if provided (optional)
+    if (buyerInfo.catatan && buyerInfo.catatan.trim()) {
+        message += `Catatan: ${buyerInfo.catatan}\n`;
+    }
+    
+    message += `\nPesanan:\n`;
     
     selectedItems.forEach(item => {
         message += `• ${item.name} x${item.quantity}\n`;
@@ -359,14 +359,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add event listeners for buyer info inputs
     const buyerNameInput = document.getElementById('buyerName');
-    const buyerTableInput = document.getElementById('buyerTable');
+    const buyerNotesInput = document.getElementById('buyerNotes');
     
     if (buyerNameInput) {
         buyerNameInput.addEventListener('input', updateBuyerInfoFromForm);
     }
     
-    if (buyerTableInput) {
-        buyerTableInput.addEventListener('input', updateBuyerInfoFromForm);
+    if (buyerNotesInput) {
+        buyerNotesInput.addEventListener('input', updateBuyerInfoFromForm);
     }
     
     // Add event listener for "Select All" checkbox
